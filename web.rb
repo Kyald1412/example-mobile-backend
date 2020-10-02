@@ -24,7 +24,7 @@ end
 
 get '/payment_methods' do
   methods = Stripe::PaymentMethod.list({
-    customer: 'cus_I7zQpMQa5Ot6ya',
+    customer: params["customer_id"],
     type: 'card',
   })
   content_type :json
