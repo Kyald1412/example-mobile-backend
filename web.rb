@@ -22,7 +22,7 @@ get '/' do
   return log_info("Great, your backend is set up. Now you can configure the Stripe example apps to point here.")
 end
 
-get '/payment_methods' do
+post '/payment_methods' do
   methods = Stripe::PaymentMethod.list({
     customer: params["customer_id"],
     type: 'card',
