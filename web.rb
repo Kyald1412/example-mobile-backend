@@ -22,6 +22,16 @@ get '/' do
   return log_info("Great, your backend is set up. Now you can configure the Stripe example apps to point here.")
 end
 
+get '/payment_methods' do
+  methods = Stripe::PaymentMethod.list({
+    customer: 'cus_I7zQpMQa5Ot6ya',
+    type: 'card',
+  })
+  content_type :json
+  status 200
+  methods.to_json
+end
+
 post '/ephemeral_keys' do
   authenticate!
   begin
