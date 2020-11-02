@@ -403,6 +403,8 @@ def currency_for_country(country)
     'aud'
   when 'gb'
     'gbp'
+  when 'jpy'
+    'jpy'
   else
     'usd'
   end
