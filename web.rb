@@ -227,7 +227,7 @@ post '/create_payment_intent' do
   end
 
   # Calculate how much to charge the customer
-  amount = calculate_price(payload[:products], payload[:shipping])
+  amount = calculate_price(payload[:products], payload[:shipping],payload[:amount])
 
   begin
     payment_intent = Stripe::PaymentIntent.create(
@@ -276,7 +276,7 @@ post '/confirm_payment_intent' do
       payment_intent = Stripe::PaymentIntent.confirm(payload[:payment_intent_id], {:use_stripe_sdk => true})
     elsif payload[:payment_method_id]
       # Calculate how much to charge the customer
-      amount = calculate_price(payload[:products], payload[:shipping])
+      amount = calculate_price(payload[:products], payload[:shipping], payload[:amount])
 
       # Create and confirm the PaymentIntent
       payment_intent = Stripe::PaymentIntent.create(
@@ -364,24 +364,25 @@ def price_lookup(product)
   return price
 end
 
-def calculate_price(products, shipping)
+def calculate_price(products, shipping,amount)
   amount = 1099  # Default amount.
 
-  if products
-    amount = products.reduce(0) { | sum, product | sum + price_lookup(product) }
-  end
+  # if products
+  #   amount = products.reduce(0) { | sum, product | sum + price_lookup(product) }
+  # end
 
-  if shipping
-    case shipping
-    when "fedex"
-      amount = amount + 599
-    when "fedex_world"
-      amount = amount + 2099
-    when "ups_worldwide"
-      amount = amount + 1099
-    end
-  end
+  # if shipping
+  #   case shipping
+  #   when "fedex"
+  #     amount = amount + 599
+  #   when "fedex_world"
+  #     amount = amount + 2099
+  #   when "ups_worldwide"
+  #     amount = amount + 1099
+  #   end
+  # end
 
+  amount = amount
   return amount
 end
 
